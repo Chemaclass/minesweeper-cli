@@ -16,18 +16,23 @@ final class MineSweeper
         $this->board = $board;
     }
 
-    public function isMine(int $row, int $column): bool
+    public function getBoard(): Board
     {
-        return $this->board->isMine($row, $column);
+        return $this->board;
     }
 
-    public function select(int $row, int $column): void
+    public function isMine(int $row, int $column): bool
     {
-
+        return $this->board->hasMineIn($row, $column);
     }
 
     public function hasOnlyMinesLeft(): bool
     {
         return $this->board->hasOnlyMinesLeft();
+    }
+
+    public function select(int $row, int $column): void
+    {
+        $this->board->select($row, $column);
     }
 }

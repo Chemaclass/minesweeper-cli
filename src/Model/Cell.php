@@ -10,7 +10,7 @@ final class Cell
     private $isMine;
 
     /** @var bool */
-    private $isSelected;
+    private $isSelected = false;
 
     public function __construct(bool $isMine)
     {

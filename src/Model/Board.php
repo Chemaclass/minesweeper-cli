@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Model;
 
+use App\Exception\CellAlreadySelected;
+use App\Exception\CellNotFound;
+
 final class Board
 {
     /** @var array */
@@ -47,12 +50,22 @@ final class Board
                 /** @var Cell $cell */
                 $cell = $this->board[$randomRow][$randomColumn];
             } while ($cell->isMine());
-            
+
             $this->board[$randomRow][$randomColumn] = new Cell(true);
         }
     }
 
-    public function isMine(int $row, int $column): bool
+    public function getRows(): int
+    {
+        return $this->rows;
+    }
+
+    public function getColumns(): int
+    {
+        return $this->columns;
+    }
+
+    public function hasMineIn(int $row, int $column): bool
     {
         /** @var Cell $cell */
         $cell = $this->board[$row][$column];
@@ -77,5 +90,25 @@ final class Board
         $totalCells = $this->rows * $this->columns;
 
         return $totalSelected === $totalCells - $this->mines;
+    }
+
+    public function select(int $row, int $column): void
+    {
+        $cell = $this->getCell($row, $column);
+
+        if ($cell->isSelected()) {
+            throw new CellAlreadySelected($row, $column);
+        }
+
+        $cell->setIsSelected(true);
+    }
+
+    public function getCell(int $row, int $column): Cell
+    {
+        if (!isset($this->board[$row][$column])) {
+            throw new CellNotFound($row, $column);
+        }
+
+        return $this->board[$row][$column];
     }
 }
