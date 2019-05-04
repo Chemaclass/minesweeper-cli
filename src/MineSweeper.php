@@ -36,12 +36,12 @@ final class MineSweeper
         return $this->makeBoard(false);
     }
 
-    public function getBoardToDisplayWithSolution(): array
+    public function getBoardToDisplayWithMines(): array
     {
         return $this->makeBoard(true);
     }
 
-    private function makeBoard(bool $withSolution = false): array
+    private function makeBoard(bool $withMines = false): array
     {
         $result = [];
         $rows = $this->board->getRows();
@@ -51,9 +51,7 @@ final class MineSweeper
             $result[$row] = [];
             for ($column = 0; $column < $columns; $column++) {
                 $cell = $this->board->getCell($row, $column);
-                $result[$row][$column] = ($withSolution)
-                    ? $cell->displaySolution()
-                    : $cell->displayIfSelected();
+                $result[$row][$column] = $cell->display($withMines);
             }
         }
 

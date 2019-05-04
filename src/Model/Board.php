@@ -96,7 +96,9 @@ final class Board
             throw new CellAlreadySelected($row, $column);
         }
 
-        $cell->setIsSelected(true);
+        $this->undoLatestSelected();
+        $this->setNewSelected($cell);
+
     }
 
     public function getCell(int $row, int $column): Cell
@@ -106,5 +108,23 @@ final class Board
         }
 
         return $this->board[$row][$column];
+    }
+
+    private function undoLatestSelected(): void
+    {
+        for ($row = 0; $row < $this->rows; $row++) {
+            for ($column = 0; $column < $this->columns; $column++) {
+                $cell = $this->getCell($row, $column);
+                if ($cell->isLastSelected()) {
+                    $cell->setIsLastSelected(false);
+                }
+            }
+        }
+    }
+
+    private function setNewSelected(Cell $cell): void
+    {
+        $cell->setIsSelected(true)
+            ->setIsLastSelected(true);
     }
 }
