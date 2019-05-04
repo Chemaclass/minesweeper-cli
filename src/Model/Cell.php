@@ -6,6 +6,13 @@ namespace App\Model;
 
 final class Cell
 {
+    const RED_COLOR = '[1;31m';
+    const WHITE_COLOR = '[1;37m';
+
+    const MINE = 'X';
+    const UNKNOWN = ' ?';
+    const SELECTED = '  ';
+
     /** @var bool */
     private $isMine;
 
@@ -32,5 +39,25 @@ final class Cell
         $this->isSelected = $isSelected;
 
         return $this;
+    }
+
+    public function displayIfSelected(): string
+    {
+        if ($this->isSelected()) {
+            return self::SELECTED;
+        }
+
+        return self::UNKNOWN;
+    }
+
+    public function displaySolution(): string
+    {
+        if ($this->isSelected()) {
+            return self::SELECTED;
+        } elseif ($this->isMine()) {
+            return sprintf("%s %s%s", self::RED_COLOR, self::MINE, self::WHITE_COLOR);
+        }
+
+        return self::UNKNOWN;
     }
 }

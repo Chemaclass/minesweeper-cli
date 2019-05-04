@@ -16,11 +16,6 @@ final class MineSweeper
         $this->board = $board;
     }
 
-    public function getBoard(): Board
-    {
-        return $this->board;
-    }
-
     public function isMine(int $row, int $column): bool
     {
         return $this->board->hasMineIn($row, $column);
@@ -34,5 +29,34 @@ final class MineSweeper
     public function select(int $row, int $column): void
     {
         $this->board->select($row, $column);
+    }
+
+    public function getBoardToDisplay(): array
+    {
+        return $this->makeBoard(false);
+    }
+
+    public function getBoardToDisplayWithSolution(): array
+    {
+        return $this->makeBoard(true);
+    }
+
+    private function makeBoard(bool $withSolution = false): array
+    {
+        $result = [];
+        $rows = $this->board->getRows();
+        $columns = $this->board->getColumns();
+
+        for ($row = 0; $row < $rows; $row++) {
+            $result[$row] = [];
+            for ($column = 0; $column < $columns; $column++) {
+                $cell = $this->board->getCell($row, $column);
+                $result[$row][$column] = ($withSolution)
+                    ? $cell->displaySolution()
+                    : $cell->displayIfSelected();
+            }
+        }
+
+        return $result;
     }
 }

@@ -2,6 +2,7 @@
 
 require_once __DIR__ . '/vendor/autoload.php';
 
+use App\Exception\CellAlreadySelected;
 use App\Exception\CellNotFound;
 use App\MineSweeper;
 use App\Model\Board;
@@ -12,38 +13,50 @@ $isBomb = false;
 
 do {
     $input = readline('Column Row: ');
-    $inputs = explode(' ', $input);
-    [$row, $column] = $inputs;
-    $isBomb = $mineSweeper->isMine($row, $column);
-
-    if (!$isBomb) {
-        try {
-            $mineSweeper->select($row, $column);
-        } catch (CellNotFound $e) {
-            echo $e->getMessage() . PHP_EOL;
-        }
+    if ('?' === $input) {
+        printBoard($mineSweeper->getBoardToDisplayWithSolution());
+        continue;
     }
-    printBoard($mineSweeper->getBoard());
-} while ($isBomb || !$mineSweeper->hasOnlyMinesLeft());
 
+    $inputs = explode(' ', $input);
+    [$row, $column] = array_map('intval', $inputs);
+
+    if (!is_int($row) || !is_int($column)) {
+        echo 'Row and column must be an integers';
+        continue;
+    }
+
+    try {
+        $isBomb = $mineSweeper->isMine($row, $column);
+
+        if (!$isBomb) {
+            $mineSweeper->select($row, $column);
+            printBoard($mineSweeper->getBoardToDisplay());
+        }
+    } catch (CellNotFound|CellAlreadySelected $e) {
+        echo $e->getMessage() . PHP_EOL;
+    }
+
+} while (!$isBomb && !$mineSweeper->hasOnlyMinesLeft());
+
+printBoard($mineSweeper->getBoardToDisplayWithSolution());
 if ($isBomb) {
     echo 'You lose! You selected a mine!' . PHP_EOL;
 } else {
     echo 'You won! There are only mines left :)' . PHP_EOL;
 }
 
-function printBoard(Board $board): void
+function printBoard(array $board): void
 {
-    for ($row = 0; $row < $board->getRows(); $row++) {
-        for ($column = 0; $column < $board->getColumns(); $column++) {
-            $cell = $board->getCell($row, $column);
+    system("clear");
+    $maxRows = count($board);
+    $maxColumns = count($board[0]);
 
-            if ($cell->isSelected()) {
-                echo ' ';
-            } else {
-                echo '?';
-            }
+    for ($row = 0; $row < $maxRows; $row++) {
+        for ($column = 0; $column < $maxColumns; $column++) {
+            echo $board[$row][$column];
         }
         echo PHP_EOL;
     }
 }
+

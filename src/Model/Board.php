@@ -67,10 +67,7 @@ final class Board
 
     public function hasMineIn(int $row, int $column): bool
     {
-        /** @var Cell $cell */
-        $cell = $this->board[$row][$column];
-
-        return $cell->isMine();
+        return $this->getCell($row, $column)->isMine();
     }
 
     public function hasOnlyMinesLeft(): bool
@@ -79,8 +76,7 @@ final class Board
 
         for ($row = 0; $row < $this->rows; $row++) {
             for ($column = 0; $column < $this->columns; $column++) {
-                /** @var Cell $cell */
-                $cell = $this->board[$row][$column];
+                $cell = $this->getCell($row, $column);
                 if ($cell->isSelected()) {
                     $totalSelected++;
                 }
