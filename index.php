@@ -12,7 +12,7 @@ $mineSweeper = new MineSweeper(new Board($rows = 4, $columns = 7, $mines = 10));
 $isBomb = false;
 
 do {
-    $input = readline('Column Row: ');
+    $input = readline('Row Column: ');
     if ('?' === $input) {
         printBoard($mineSweeper->getBoardToDisplayWithSolution());
         continue;
@@ -40,6 +40,7 @@ do {
 } while (!$isBomb && !$mineSweeper->hasOnlyMinesLeft());
 
 printBoard($mineSweeper->getBoardToDisplayWithSolution());
+
 if ($isBomb) {
     echo 'You lose! You selected a mine!' . PHP_EOL;
 } else {
@@ -49,12 +50,22 @@ if ($isBomb) {
 function printBoard(array $board): void
 {
     system("clear");
-    $maxRows = count($board);
-    $maxColumns = count($board[0]);
+    $maxRows = count($board) - 1;
+    $maxColumns = count($board[0]) - 1;
 
-    for ($row = 0; $row < $maxRows; $row++) {
-        for ($column = 0; $column < $maxColumns; $column++) {
-            echo $board[$row][$column];
+    // all columns numbers
+    echo "  ";
+    foreach (range(0, $maxColumns) as $columnNumber) {
+        echo " $columnNumber ";
+    }
+    echo " <- column #";
+    echo PHP_EOL;
+
+    // every row with its number as well
+    for ($row = 0; $row <= $maxRows; $row++) {
+        echo "$row: ";
+        for ($column = 0; $column <= $maxColumns; $column++) {
+            echo sprintf('%s| ', $board[$row][$column]);
         }
         echo PHP_EOL;
     }
