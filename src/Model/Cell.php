@@ -14,10 +14,12 @@ final class Cell
 
     const MINE = 'X';
     const UNKNOWN = '?';
-    const SELECTED = '_';
 
     /** @var bool */
-    private $isMine;
+    private $isMine = false;
+
+    /** @var int */
+    private $totalNeighbors = 0;
 
     /** @var bool */
     private $isSelected = false;
@@ -25,7 +27,7 @@ final class Cell
     /** @var bool */
     private $isLastSelected = false;
 
-    public function __construct(bool $isMine)
+    public function __construct(bool $isMine = false)
     {
         $this->isMine = $isMine;
     }
@@ -33,6 +35,18 @@ final class Cell
     public function isMine(): bool
     {
         return $this->isMine;
+    }
+
+    public function getTotalNeighbors(): int
+    {
+        return $this->totalNeighbors;
+    }
+
+    public function setTotalNeighbors(int $totalNeighbors): Cell
+    {
+        $this->totalNeighbors = $totalNeighbors;
+
+        return $this;
     }
 
     public function isSelected(): bool
@@ -59,44 +73,33 @@ final class Cell
         return $this;
     }
 
-    public function display(bool $withMines = false): string
+    public function display(bool $withSolution = false): string
     {
         if ($this->isLastSelected() && $this->isMine()) {
-            return $this->lastSelected(self::MINE);
+            return $this->render(self::BLUE_COLOR, self::MINE);
         }
 
         if ($this->isLastSelected() && !$this->isMine()) {
-            return $this->lastSelected(self::SELECTED);
+            return $this->render(self::BLUE_COLOR, (string)$this->getTotalNeighbors());
         }
 
         if ($this->isSelected()) {
-            return $this->selected();
+            return $this->render(self::GREEN_COLOR, (string)$this->getTotalNeighbors());
         }
 
-        if ($withMines && $this->isMine()) {
-            return $this->mine();
+        if ($withSolution && $this->isMine()) {
+            return $this->render(self::RED_COLOR, self::MINE);
         }
 
-        return $this->unknown();
+        if ($withSolution) {
+            return $this->render(self::YELLOW_COLOR, (string)$this->getTotalNeighbors());
+        }
+
+        return $this->render(self::YELLOW_COLOR, self::UNKNOWN);
     }
 
-    private function lastSelected(string $icon): string
+    private function render(string $color, string $icon): string
     {
-        return sprintf("%s%s%s", self::BLUE_COLOR, $icon, self::WHITE_COLOR);
-    }
-
-    private function selected(): string
-    {
-        return sprintf("%s%s%s", self::GREEN_COLOR, self::SELECTED, self::WHITE_COLOR);
-    }
-
-    private function mine(): string
-    {
-        return sprintf("%s%s%s", self::RED_COLOR, self::MINE, self::WHITE_COLOR);
-    }
-
-    private function unknown(): string
-    {
-        return sprintf("%s%s%s", self::YELLOW_COLOR, self::UNKNOWN, self::WHITE_COLOR);
+        return sprintf("%s%s%s", $color, $icon, self::WHITE_COLOR);
     }
 }

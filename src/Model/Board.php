@@ -29,6 +29,7 @@ final class Board
         $this->board = [];
         $this->generateBoard($rows, $columns);
         $this->introduceMinesIntoBoard($mines);
+        $this->calculateMinesAround();
     }
 
     private function generateBoard(int $rows, int $columns): void
@@ -53,6 +54,61 @@ final class Board
 
             $this->board[$randomRow][$randomColumn] = new Cell(true);
         }
+    }
+
+    private function calculateMinesAround(): void
+    {
+        for ($row = 0; $row < $this->rows; $row++) {
+            for ($column = 0; $column < $this->columns; $column++) {
+                $minesAround = $this->calculateMinesAroundFor($row, $column);
+                $cell = $this->getCell($row, $column);
+                if ($minesAround > 0 && !$cell->isMine()) {
+                    $cell->setTotalNeighbors($minesAround);
+                }
+            }
+        }
+    }
+
+    // TODO: ...
+    private function calculateMinesAroundFor(int $row, int $column): int
+    {
+        $topLeft = $this->board[$row - 1][$column - 1] ?? new Cell();
+        $topMiddle = $this->board[$row - 1][$column] ?? new Cell();
+        $topRight = $this->board[$row - 1][$column + 1] ?? new Cell();
+        $left = $this->board[$row][$column - 1] ?? new Cell();
+        $right = $this->board[$row][$column + 1] ?? new Cell();
+        $bottomLeft = $this->board[$row + 1][$column - 1] ?? new Cell();
+        $bottomMiddle = $this->board[$row + 1][$column] ?? new Cell();
+        $bottomRight = $this->board[$row + 1][$column + 1] ?? new Cell();
+        $minesAround = 0;
+
+        if ($topLeft->isMine()) {
+            $minesAround++;
+        }
+        if ($topMiddle->isMine()) {
+            $minesAround++;
+        }
+        if ($topRight->isMine()) {
+            $minesAround++;
+        }
+        if ($left->isMine()) {
+            $minesAround++;
+        }
+        if ($right->isMine()) {
+            $minesAround++;
+        }
+        if ($bottomLeft->isMine()) {
+            $minesAround++;
+        }
+        if ($bottomMiddle->isMine()) {
+            $minesAround++;
+        }
+        if ($bottomRight->isMine()) {
+            $minesAround++;
+        }
+
+        return $minesAround;
+
     }
 
     public function getRows(): int
