@@ -69,42 +69,25 @@ final class Board
         }
     }
 
-    // TODO: ...
     private function calculateMinesAroundFor(int $row, int $column): int
     {
-        $topLeft = $this->board[$row - 1][$column - 1] ?? new Cell();
-        $topMiddle = $this->board[$row - 1][$column] ?? new Cell();
-        $topRight = $this->board[$row - 1][$column + 1] ?? new Cell();
-        $left = $this->board[$row][$column - 1] ?? new Cell();
-        $right = $this->board[$row][$column + 1] ?? new Cell();
-        $bottomLeft = $this->board[$row + 1][$column - 1] ?? new Cell();
-        $bottomMiddle = $this->board[$row + 1][$column] ?? new Cell();
-        $bottomRight = $this->board[$row + 1][$column + 1] ?? new Cell();
+        $possibleCells = [
+            $this->board[$row - 1][$column - 1] ?? new Cell(),
+            $this->board[$row - 1][$column] ?? new Cell(),
+            $this->board[$row - 1][$column + 1] ?? new Cell(),
+            $this->board[$row][$column - 1] ?? new Cell(),
+            $this->board[$row][$column + 1] ?? new Cell(),
+            $this->board[$row + 1][$column - 1] ?? new Cell(),
+            $this->board[$row + 1][$column] ?? new Cell(),
+            $this->board[$row + 1][$column + 1] ?? new Cell(),
+        ];
+
         $minesAround = 0;
 
-        if ($topLeft->isMine()) {
-            $minesAround++;
-        }
-        if ($topMiddle->isMine()) {
-            $minesAround++;
-        }
-        if ($topRight->isMine()) {
-            $minesAround++;
-        }
-        if ($left->isMine()) {
-            $minesAround++;
-        }
-        if ($right->isMine()) {
-            $minesAround++;
-        }
-        if ($bottomLeft->isMine()) {
-            $minesAround++;
-        }
-        if ($bottomMiddle->isMine()) {
-            $minesAround++;
-        }
-        if ($bottomRight->isMine()) {
-            $minesAround++;
+        foreach ($possibleCells as $cell) {
+            if ($cell->isMine()) {
+                $minesAround++;
+            }
         }
 
         return $minesAround;

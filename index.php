@@ -33,7 +33,6 @@ do {
 
     try {
         $isBomb = $mineSweeper->isMine($row, $column);
-
         $mineSweeper->select($row, $column);
         printBoard($mineSweeper->getBoardToDisplay());
     } catch (CellNotFound|CellAlreadySelected $e) {
