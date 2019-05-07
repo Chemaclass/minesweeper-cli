@@ -1,12 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 require_once __DIR__ . '/vendor/autoload.php';
 
+use App\BoardPrinter;
 use App\Exception\CellAlreadySelected;
 use App\Exception\CellNotFound;
 use App\MineSweeper;
 use App\Model\Board;
 
+$boardPrinter = new BoardPrinter();
 $mineSweeper = new MineSweeper(new Board($rows = 4, $columns = 7, $mines = 10));
 $isBomb = false;
 
@@ -19,12 +23,12 @@ do {
     }
 
     if ('?' === $input) {
-        printBoard($mineSweeper->getBoardToDisplayWithMines());
+        $boardPrinter->print($mineSweeper->getBoardToDisplayWithMines());
         continue;
     }
 
     $inputs = explode(' ', $input);
-    [$row, $column] = array_map('intval', $inputs);
+    [$row, $column] = array_map('intval', $inputs);// bug
 
     if (!is_int($row) || !is_int($column)) {
         echo 'Row and column must be an integers' . PHP_EOL;
@@ -34,44 +38,16 @@ do {
     try {
         $isBomb = $mineSweeper->isMine($row, $column);
         $mineSweeper->select($row, $column);
-        printBoard($mineSweeper->getBoardToDisplay());
+        $boardPrinter->print($mineSweeper->getBoardToDisplay());
     } catch (CellNotFound|CellAlreadySelected $e) {
         echo $e->getMessage() . PHP_EOL;
     }
-
 } while (!$isBomb && !$mineSweeper->hasOnlyMinesLeft());
 
-printBoard($mineSweeper->getBoardToDisplayWithMines());
+$boardPrinter->print($mineSweeper->getBoardToDisplayWithMines());
 
 if ($isBomb) {
     echo 'You lose! You selected a mine!' . PHP_EOL;
 } else {
     echo 'You won! There are only mines left :)' . PHP_EOL;
 }
-
-function printBoard(array $board): void
-{
-    system("clear");
-    $maxRows = count($board) - 1;
-    $maxColumns = count($board[0]) - 1;
-
-    // all columns numbers
-    echo "Rows" . PHP_EOL;
-    echo "⬇ ";
-    foreach (range(0, $maxColumns) as $columnNumber) {
-        echo " $columnNumber  ";
-    }
-
-    echo " ⬅ Columns";
-    echo PHP_EOL;
-
-    // every row with its number as well
-    for ($row = 0; $row <= $maxRows; $row++) {
-        echo "$row: ";
-        for ($column = 0; $column <= $maxColumns; $column++) {
-            echo sprintf('%s | ', $board[$row][$column]);
-        }
-        echo PHP_EOL;
-    }
-}
-
