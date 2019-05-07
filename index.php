@@ -7,6 +7,7 @@ require_once __DIR__ . '/vendor/autoload.php';
 use App\BoardPrinter;
 use App\Exception\CellAlreadySelected;
 use App\Exception\CellNotFound;
+use App\Exception\UnknownInputKey;
 use App\Input\InputParser;
 use App\MineSweeper;
 use App\Model\Board;
@@ -18,32 +19,33 @@ $mineSweeper = new MineSweeper(new Board($rows = 4, $columns = 7, $mines = 10));
 $isBomb = false;
 
 do {
-    $input = readline('> Prompt(RowNumber ColumnNumber): ');
+    $input = readline('> Introduce the coordinates(or help): ');
     $inputParser = new InputParser($input);
 
     if ($inputParser->isEmpty()) {
         $output->writeln('The input can not be empty!');
         continue;
-    }
-
-    if ($inputParser->isHelp()) {
+    } elseif ($inputParser->isHelp()) {
+        $output->writeln('Example: "c|column:0 r|row:1 [flag]"');
+        continue;
+    } elseif ($inputParser->isSolution()) {
         $boardPrinter->print($mineSweeper->getBoardToDisplayWithMines());
         continue;
     }
 
-    $inputParser->validate();
-
-    if ($inputParser->hasError()) {
-        $output->writeln($inputParser->getError());
-        continue;
-    }
-
     try {
+        $inputParser->validate();
+
+        if ($inputParser->hasError()) {
+            $output->writeln($inputParser->getError());
+            continue;
+        }
+
         // pass an object new Coordinates{row, column} instead.
         $isBomb = $mineSweeper->isMine($inputParser->getCoordinates());
         $mineSweeper->select($inputParser->getCoordinates());
         $boardPrinter->print($mineSweeper->getBoardToDisplay());
-    } catch (CellNotFound|CellAlreadySelected $e) {
+    } catch (CellNotFound|CellAlreadySelected|UnknownInputKey $e) {
         $output->writeln($e->getMessage());
     }
 } while (!$isBomb && !$mineSweeper->hasOnlyMinesLeft());

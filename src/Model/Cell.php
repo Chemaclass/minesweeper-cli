@@ -12,8 +12,8 @@ final class Cell
     const LAST_SELECTED_COLOR = Color::BLUE;
     const WHITE_COLOR = Color::WHITE;
 
-    const MINE = 'X';
-    const UNKNOWN = '?';
+    const MINE_ICON = 'X';
+    const UNKNOWN_ICON = '?';
 
     /** @var bool */
     private $isMine = false;
@@ -76,7 +76,7 @@ final class Cell
     public function display(bool $withSolution = false): string
     {
         if ($this->isLastSelected() && $this->isMine()) {
-            return $this->render(self::LAST_SELECTED_COLOR, self::MINE);
+            return $this->render(self::LAST_SELECTED_COLOR, self::MINE_ICON);
         }
 
         if ($this->isLastSelected() && !$this->isMine()) {
@@ -88,14 +88,14 @@ final class Cell
         }
 
         if ($withSolution && $this->isMine()) {
-            return $this->render(self::MINE_COLOR, self::MINE);
+            return $this->render(self::MINE_COLOR, self::MINE_ICON);
         }
 
         if ($withSolution) {
             return $this->render(self::UNKNOWN_COLOR, (string)$this->getTotalNeighbors());
         }
 
-        return $this->render(self::UNKNOWN_COLOR, self::UNKNOWN);
+        return $this->render(self::UNKNOWN_COLOR, self::UNKNOWN_ICON);
     }
 
     private function render(string $color, string $icon): string

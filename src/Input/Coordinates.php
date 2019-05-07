@@ -12,7 +12,7 @@ final class Coordinates
     /** @var int */
     private $column;
 
-    public function __construct(int $row, int $column)
+    public function __construct(int $row = 0, int $column = 0)
     {
         $this->row = $row;
         $this->column = $column;
@@ -26,6 +26,20 @@ final class Coordinates
     public function getColumn(): int
     {
         return $this->column;
+    }
+
+    public function setRow(int $row): Coordinates
+    {
+        $this->row = $row;
+
+        return $this;
+    }
+
+    public function setColumn(int $column): Coordinates
+    {
+        $this->column = $column;
+
+        return $this;
     }
 
     public function __toString(): string

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Input;
 
+use App\Exception\UnknownInputKey;
+
 final class InputParser
 {
     /** @var string */
@@ -13,16 +15,13 @@ final class InputParser
     private $coordinates;
 
     /** @var bool */
-    private $isSelectCell;
+    private $isFlagMine = false;
 
     /** @var bool */
-    private $isFlagMine;
-
-    /** @var bool */
-    private $shouldRevealAllButFlagged;
+    private $shouldRevealAllButFlagged = false;
 
     /** @var string */
-    private $error;
+    private $error = '';
 
     public function __construct(string $input)
     {
@@ -32,11 +31,6 @@ final class InputParser
     public function getCoordinates(): Coordinates
     {
         return $this->coordinates;
-    }
-
-    public function isSelectCell(): bool
-    {
-        return $this->isSelectCell;
     }
 
     public function isFlagMine(): bool
@@ -51,12 +45,33 @@ final class InputParser
 
     public function validate(): void
     {
-        $inputs = explode(' ', $this->input);
-        [$row, $column] = array_map(function ($val) {
-            return (int)$val;
-        }, $inputs);
+        $coordinates = new Coordinates();
 
-        $this->coordinates = new Coordinates($row, $column);
+        foreach (explode(' ', $this->input) as $input) {
+            $keyValue = explode(':', $input);
+            // set the action
+            if (!isset($keyValue[1])) {
+                if ('flag' === $keyValue[0]) {
+                    $this->isFlagMine = true;
+                    continue;
+                }
+            }
+            // set the coordinates
+            switch ($keyValue[0]) {
+                case 'c' :
+                case 'column' :
+                    $coordinates->setColumn((int)$keyValue[1]);
+                    break;
+                case 'r':
+                case 'row' :
+                    $coordinates->setRow((int)$keyValue[1]);
+                    break;
+                default:
+                    throw new UnknownInputKey($input);
+            }
+        }
+
+        $this->coordinates = $coordinates;
     }
 
     public function hasError(): bool
@@ -76,7 +91,12 @@ final class InputParser
 
     public function isHelp(): bool
     {
-        return '?' === $this->input;
+        return 'help' === $this->input;
+    }
+
+    public function isSolution(): bool
+    {
+        return 'solution' === $this->input;
     }
 
 }
