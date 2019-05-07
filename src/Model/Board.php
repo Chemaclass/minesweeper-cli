@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Model;
 
-use App\Exception\CellAlreadySelected;
 use App\Exception\CellNotFound;
 use App\Input\Coordinates;
 
@@ -39,7 +38,7 @@ final class Board
             $this->board[$row] = [];
 
             for ($column = 0; $column < $columns; $column++) {
-                $this->board[$row][$column] = new Cell(false);
+                $this->board[$row][$column] = new Cell();
             }
         }
     }
@@ -64,6 +63,7 @@ final class Board
                 $coordinates = new Coordinates($row, $column);
                 $minesAround = $this->calculateMinesAroundFor($coordinates);
                 $cell = $this->getCell($coordinates);
+
                 if ($minesAround > 0 && !$cell->isMine()) {
                     $cell->setTotalNeighbors($minesAround);
                 }
@@ -73,6 +73,7 @@ final class Board
 
     private function calculateMinesAroundFor(Coordinates $coordinates): int
     {
+        $minesAround = 0;
         $row = $coordinates->getRow();
         $column = $coordinates->getColumn();
 
@@ -86,8 +87,6 @@ final class Board
             $this->board[$row + 1][$column] ?? new Cell(),
             $this->board[$row + 1][$column + 1] ?? new Cell(),
         ];
-
-        $minesAround = 0;
 
         foreach ($possibleCells as $cell) {
             if ($cell->isMine()) {
@@ -138,6 +137,7 @@ final class Board
         for ($row = 0; $row < $this->rows; $row++) {
             for ($column = 0; $column < $this->columns; $column++) {
                 $cell = $this->getCell(new Coordinates($row, $column));
+
                 if ($cell->isMine() && $cell->isFlagged()) {
                     $flaggedMines++;
                 }
@@ -149,9 +149,9 @@ final class Board
 
     public function select(Coordinates $coordinates, bool $flag = false): void
     {
+        $this->undoLatestSelected();
         $cell = $this->getCell($coordinates);
         $cell->setIsFlagged($flag);
-        $this->undoLatestSelected();
         $this->setNewSelected($cell);
     }
 
@@ -172,6 +172,7 @@ final class Board
         for ($row = 0; $row < $this->rows; $row++) {
             for ($column = 0; $column < $this->columns; $column++) {
                 $cell = $this->getCell(new Coordinates($row, $column));
+
                 if ($cell->isLastSelected()) {
                     $cell->setIsLastSelected(false);
                 }

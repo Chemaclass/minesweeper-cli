@@ -47,7 +47,11 @@ final class InputParser
     {
         $coordinates = new Coordinates();
 
-        foreach (explode(' ', $this->input) as $input) {
+        $inputs = array_filter(explode(' ', $this->input), function ($str) {
+            return !empty($str);
+        });
+
+        foreach ($inputs as $input) {
             $keyValue = explode(':', $input);
             // set the action
             if (!isset($keyValue[1])) {

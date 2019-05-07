@@ -6,15 +6,20 @@ namespace App;
 
 use App\Input\Coordinates;
 use App\Model\Board;
+use App\Model\CellRenderer;
 
 final class MineSweeper
 {
     /** @var Board */
     private $board;
 
-    public function __construct(Board $board)
+    /** @var CellRenderer */
+    private $cellRenderer;
+
+    public function __construct(Board $board, CellRenderer $cellRenderer)
     {
         $this->board = $board;
+        $this->cellRenderer = $cellRenderer;
     }
 
     public function isMine(Coordinates $coordinates): bool
@@ -42,12 +47,12 @@ final class MineSweeper
         return $this->makeBoard(false);
     }
 
-    public function getBoardToDisplayWithMines(): array
+    public function getBoardToDisplayWithSolution(): array
     {
         return $this->makeBoard(true);
     }
 
-    private function makeBoard(bool $withMines = false): array
+    private function makeBoard(bool $withSolution = false): array
     {
         $result = [];
         $rows = $this->board->getTotalRows();
@@ -57,7 +62,7 @@ final class MineSweeper
             $result[$row] = [];
             for ($column = 0; $column < $columns; $column++) {
                 $cell = $this->board->getCell(new Coordinates($row, $column));
-                $result[$row][$column] = $cell->display($withMines);
+                $result[$row][$column] = $this->cellRenderer->render($cell, $withSolution);
             }
         }
 
