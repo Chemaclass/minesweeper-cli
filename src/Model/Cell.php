@@ -6,11 +6,11 @@ namespace App\Model;
 
 final class Cell
 {
-    const RED_COLOR = '[1;31m';
-    const GREEN_COLOR = '[1;32m';
-    const YELLOW_COLOR = '[1;33m';
-    const BLUE_COLOR = '[1;34m';
-    const WHITE_COLOR = '[1;37m';
+    const MINE_COLOR = Color::RED;
+    const SELECTED_COLOR = Color::GREEN;
+    const UNKNOWN_COLOR = Color::YELLOW;
+    const LAST_SELECTED_COLOR = Color::BLUE;
+    const WHITE_COLOR = Color::WHITE;
 
     const MINE = 'X';
     const UNKNOWN = '?';
@@ -76,26 +76,26 @@ final class Cell
     public function display(bool $withSolution = false): string
     {
         if ($this->isLastSelected() && $this->isMine()) {
-            return $this->render(self::BLUE_COLOR, self::MINE);
+            return $this->render(self::LAST_SELECTED_COLOR, self::MINE);
         }
 
         if ($this->isLastSelected() && !$this->isMine()) {
-            return $this->render(self::BLUE_COLOR, (string)$this->getTotalNeighbors());
+            return $this->render(self::LAST_SELECTED_COLOR, (string)$this->getTotalNeighbors());
         }
 
         if ($this->isSelected()) {
-            return $this->render(self::GREEN_COLOR, (string)$this->getTotalNeighbors());
+            return $this->render(self::SELECTED_COLOR, (string)$this->getTotalNeighbors());
         }
 
         if ($withSolution && $this->isMine()) {
-            return $this->render(self::RED_COLOR, self::MINE);
+            return $this->render(self::MINE_COLOR, self::MINE);
         }
 
         if ($withSolution) {
-            return $this->render(self::YELLOW_COLOR, (string)$this->getTotalNeighbors());
+            return $this->render(self::UNKNOWN_COLOR, (string)$this->getTotalNeighbors());
         }
 
-        return $this->render(self::YELLOW_COLOR, self::UNKNOWN);
+        return $this->render(self::UNKNOWN_COLOR, self::UNKNOWN);
     }
 
     private function render(string $color, string $icon): string
