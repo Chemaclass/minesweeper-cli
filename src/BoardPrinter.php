@@ -4,8 +4,18 @@ declare(strict_types=1);
 
 namespace App;
 
+use App\Output\OutputInterface;
+
 final class BoardPrinter
 {
+    /** @var OutputInterface */
+    private $output;
+
+    public function __construct(OutputInterface $output)
+    {
+        $this->output = $output;
+    }
+
     public function print(array $board): void
     {
         system("clear");
@@ -13,21 +23,20 @@ final class BoardPrinter
         $maxColumns = count($board[0]) - 1;
 
         // all columns numbers
-        echo "Rows" . PHP_EOL;
-        echo "⬇ ";
+        $this->output->writeln("Rows");
+        $this->output->write("⬇ ");
         foreach (range(0, $maxColumns) as $columnNumber) {
-            echo " $columnNumber  ";
+            $this->output->write(" $columnNumber  ");
         }
-        echo " ⬅ Columns";
-        echo PHP_EOL;
+        $this->output->writeln(" ⬅ Columns");
 
         // every row with its number as well
         for ($row = 0; $row <= $maxRows; $row++) {
-            echo "$row: ";
+            $this->output->write("$row: ");
             for ($column = 0; $column <= $maxColumns; $column++) {
-                echo sprintf('%s | ', $board[$row][$column]);
+                $this->output->write(sprintf('%s | ', $board[$row][$column]));
             }
-            echo PHP_EOL;
+            $this->output->writeln('');
         }
     }
 }

@@ -9,8 +9,10 @@ use App\Exception\CellAlreadySelected;
 use App\Exception\CellNotFound;
 use App\MineSweeper;
 use App\Model\Board;
+use App\Output\EchoOutput;
 
-$boardPrinter = new BoardPrinter();
+$output = new EchoOutput();
+$boardPrinter = new BoardPrinter($output);
 $mineSweeper = new MineSweeper(new Board($rows = 4, $columns = 7, $mines = 10));
 $isBomb = false;
 
@@ -18,7 +20,7 @@ do {
     $input = readline('> Prompt(RowNumber ColumnNumber): ');
 
     if (empty($input)) {
-        echo 'The input can not be empty!' . PHP_EOL;
+        $output->writeln('The input can not be empty!');
         continue;
     }
 
@@ -31,7 +33,7 @@ do {
     [$row, $column] = array_map('intval', $inputs);// bug
 
     if (!is_int($row) || !is_int($column)) {
-        echo 'Row and column must be an integers' . PHP_EOL;
+        $output->writeln('Row and column must be an integers');
         continue;
     }
 
@@ -40,14 +42,14 @@ do {
         $mineSweeper->select($row, $column);
         $boardPrinter->print($mineSweeper->getBoardToDisplay());
     } catch (CellNotFound|CellAlreadySelected $e) {
-        echo $e->getMessage() . PHP_EOL;
+        $output->writeln($e->getMessage());
     }
 } while (!$isBomb && !$mineSweeper->hasOnlyMinesLeft());
 
 $boardPrinter->print($mineSweeper->getBoardToDisplayWithMines());
 
 if ($isBomb) {
-    echo 'You lose! You selected a mine!' . PHP_EOL;
+    $output->writeln('You lose! You selected a mine!');
 } else {
-    echo 'You won! There are only mines left :)' . PHP_EOL;
+    $output->writeln('You won! There are only mines left :)');
 }
