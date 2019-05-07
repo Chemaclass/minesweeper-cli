@@ -7,6 +7,7 @@ require_once __DIR__ . '/vendor/autoload.php';
 use App\BoardPrinter;
 use App\Exception\CellAlreadySelected;
 use App\Exception\CellNotFound;
+use App\Input\InputParser;
 use App\MineSweeper;
 use App\Model\Board;
 use App\Output\EchoOutput;
@@ -18,28 +19,29 @@ $isBomb = false;
 
 do {
     $input = readline('> Prompt(RowNumber ColumnNumber): ');
+    $inputParser = new InputParser($input);
 
-    if (empty($input)) {
+    if ($inputParser->isEmpty()) {
         $output->writeln('The input can not be empty!');
         continue;
     }
 
-    if ('?' === $input) {
+    if ($inputParser->isHelp()) {
         $boardPrinter->print($mineSweeper->getBoardToDisplayWithMines());
         continue;
     }
 
-    $inputs = explode(' ', $input);
-    [$row, $column] = array_map('intval', $inputs);// bug
+    $inputParser->validate();
 
-    if (!is_int($row) || !is_int($column)) {
-        $output->writeln('Row and column must be an integers');
+    if ($inputParser->hasError()) {
+        $output->writeln($inputParser->getError());
         continue;
     }
 
     try {
-        $isBomb = $mineSweeper->isMine($row, $column);
-        $mineSweeper->select($row, $column);
+        // pass an object new Coordinates{row, column} instead.
+        $isBomb = $mineSweeper->isMine($inputParser->getCoordinates());
+        $mineSweeper->select($inputParser->getCoordinates());
         $boardPrinter->print($mineSweeper->getBoardToDisplay());
     } catch (CellNotFound|CellAlreadySelected $e) {
         $output->writeln($e->getMessage());

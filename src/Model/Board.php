@@ -94,12 +94,12 @@ final class Board
 
     }
 
-    public function getRows(): int
+    public function getTotalRows(): int
     {
         return $this->rows;
     }
 
-    public function getColumns(): int
+    public function getTotalColumns(): int
     {
         return $this->columns;
     }
