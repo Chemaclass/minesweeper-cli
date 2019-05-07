@@ -16,6 +16,7 @@ use App\Output\Color;
 use App\Output\EchoOutput;
 use App\Output\RenderWithColor;
 
+$isBomb = false;
 $output = new EchoOutput();
 $boardPrinter = new BoardPrinter($output);
 $renderWithColor = new RenderWithColor();
@@ -23,7 +24,6 @@ $mineSweeper = new MineSweeper(
     new Board($rows = 4, $columns = 7, $mines = 1),
     new CellRenderer($renderWithColor)
 );
-$isBomb = false;
 
 do {
     $input = readline('> Introduce the coordinates(or type help): ');

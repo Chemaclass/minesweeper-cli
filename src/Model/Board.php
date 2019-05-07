@@ -10,7 +10,7 @@ use App\Input\Coordinates;
 final class Board
 {
     /** @var array */
-    private $board;
+    private $rawBoard;
 
     /** @var int */
     private $rows;
@@ -26,7 +26,7 @@ final class Board
         $this->rows = $rows;
         $this->columns = $columns;
         $this->mines = $mines;
-        $this->board = [];
+        $this->rawBoard = [];
         $this->generateBoard($rows, $columns);
         $this->introduceMinesIntoBoard($mines);
         $this->calculateMinesAround();
@@ -35,10 +35,10 @@ final class Board
     private function generateBoard(int $rows, int $columns): void
     {
         for ($row = 0; $row < $rows; $row++) {
-            $this->board[$row] = [];
+            $this->rawBoard[$row] = [];
 
             for ($column = 0; $column < $columns; $column++) {
-                $this->board[$row][$column] = new Cell();
+                $this->rawBoard[$row][$column] = new Cell();
             }
         }
     }
@@ -49,10 +49,10 @@ final class Board
             do {
                 [$randomRow, $randomColumn] = [mt_rand(0, $this->rows - 1), mt_rand(0, $this->columns - 1)];
                 /** @var Cell $cell */
-                $cell = $this->board[$randomRow][$randomColumn];
+                $cell = $this->rawBoard[$randomRow][$randomColumn];
             } while ($cell->isMine());
 
-            $this->board[$randomRow][$randomColumn] = new Cell(true);
+            $this->rawBoard[$randomRow][$randomColumn] = new Cell(true);
         }
     }
 
@@ -61,7 +61,7 @@ final class Board
         for ($row = 0; $row < $this->rows; $row++) {
             for ($column = 0; $column < $this->columns; $column++) {
                 $coordinates = new Coordinates($row, $column);
-                $minesAround = $this->calculateMinesAroundFor($coordinates);
+                $minesAround = MinesAroundCalculator::calculate($this->rawBoard, $coordinates);
                 $cell = $this->getCell($coordinates);
 
                 if ($minesAround > 0 && !$cell->isMine()) {
@@ -69,32 +69,6 @@ final class Board
                 }
             }
         }
-    }
-
-    private function calculateMinesAroundFor(Coordinates $coordinates): int
-    {
-        $minesAround = 0;
-        $row = $coordinates->getRow();
-        $column = $coordinates->getColumn();
-
-        $possibleCells = [
-            $this->board[$row - 1][$column - 1] ?? new Cell(),
-            $this->board[$row - 1][$column] ?? new Cell(),
-            $this->board[$row - 1][$column + 1] ?? new Cell(),
-            $this->board[$row][$column - 1] ?? new Cell(),
-            $this->board[$row][$column + 1] ?? new Cell(),
-            $this->board[$row + 1][$column - 1] ?? new Cell(),
-            $this->board[$row + 1][$column] ?? new Cell(),
-            $this->board[$row + 1][$column + 1] ?? new Cell(),
-        ];
-
-        foreach ($possibleCells as $cell) {
-            if ($cell->isMine()) {
-                $minesAround++;
-            }
-        }
-
-        return $minesAround;
     }
 
     public function getTotalRows(): int
@@ -160,11 +134,11 @@ final class Board
         $row = $coordinates->getRow();
         $column = $coordinates->getColumn();
 
-        if (!isset($this->board[$row][$column])) {
+        if (!isset($this->rawBoard[$row][$column])) {
             throw new CellNotFound($row, $column);
         }
 
-        return $this->board[$row][$column];
+        return $this->rawBoard[$row][$column];
     }
 
     private function undoLatestSelected(): void
