@@ -98,5 +98,4 @@ final class InputParser
     {
         return 'solution' === $this->input;
     }
-
 }

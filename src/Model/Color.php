@@ -10,5 +10,6 @@ interface Color
     const GREEN = "\e[1;32m";
     const YELLOW = "\e[1;33m";
     const BLUE = "\e[1;34m";
+    const PURPLE = "\e[1;35m";
     const WHITE = "\e[1;37m";
 }

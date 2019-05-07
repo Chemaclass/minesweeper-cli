@@ -6,6 +6,7 @@ namespace App\Model;
 
 use App\Exception\CellAlreadySelected;
 use App\Exception\CellNotFound;
+use App\Input\Coordinates;
 
 final class Board
 {
@@ -60,8 +61,9 @@ final class Board
     {
         for ($row = 0; $row < $this->rows; $row++) {
             for ($column = 0; $column < $this->columns; $column++) {
-                $minesAround = $this->calculateMinesAroundFor($row, $column);
-                $cell = $this->getCell($row, $column);
+                $coordinates = new Coordinates($row, $column);
+                $minesAround = $this->calculateMinesAroundFor($coordinates);
+                $cell = $this->getCell($coordinates);
                 if ($minesAround > 0 && !$cell->isMine()) {
                     $cell->setTotalNeighbors($minesAround);
                 }
@@ -69,8 +71,11 @@ final class Board
         }
     }
 
-    private function calculateMinesAroundFor(int $row, int $column): int
+    private function calculateMinesAroundFor(Coordinates $coordinates): int
     {
+        $row = $coordinates->getRow();
+        $column = $coordinates->getColumn();
+
         $possibleCells = [
             $this->board[$row - 1][$column - 1] ?? new Cell(),
             $this->board[$row - 1][$column] ?? new Cell(),
@@ -91,7 +96,6 @@ final class Board
         }
 
         return $minesAround;
-
     }
 
     public function getTotalRows(): int
@@ -104,9 +108,9 @@ final class Board
         return $this->columns;
     }
 
-    public function hasMineIn(int $row, int $column): bool
+    public function hasMineIn(Coordinates $coordinates): bool
     {
-        return $this->getCell($row, $column)->isMine();
+        return $this->getCell($coordinates)->isMine();
     }
 
     public function hasOnlyMinesLeft(): bool
@@ -115,7 +119,7 @@ final class Board
 
         for ($row = 0; $row < $this->rows; $row++) {
             for ($column = 0; $column < $this->columns; $column++) {
-                $cell = $this->getCell($row, $column);
+                $cell = $this->getCell(new Coordinates($row, $column));
                 if ($cell->isSelected()) {
                     $totalSelected++;
                 }
@@ -127,21 +131,35 @@ final class Board
         return $totalSelected === $totalCells - $this->mines;
     }
 
-    public function select(int $row, int $column): void
+    public function allMinesWereFlagged(): bool
     {
-        $cell = $this->getCell($row, $column);
+        $flaggedMines = 0;
 
-        if ($cell->isSelected()) {
-            throw new CellAlreadySelected($row, $column);
+        for ($row = 0; $row < $this->rows; $row++) {
+            for ($column = 0; $column < $this->columns; $column++) {
+                $cell = $this->getCell(new Coordinates($row, $column));
+                if ($cell->isMine() && $cell->isFlagged()) {
+                    $flaggedMines++;
+                }
+            }
         }
 
-        $this->undoLatestSelected();
-        $this->setNewSelected($cell);
-
+        return $flaggedMines === $this->mines;
     }
 
-    public function getCell(int $row, int $column): Cell
+    public function select(Coordinates $coordinates, bool $flag = false): void
     {
+        $cell = $this->getCell($coordinates);
+        $cell->setIsFlagged($flag);
+        $this->undoLatestSelected();
+        $this->setNewSelected($cell);
+    }
+
+    public function getCell(Coordinates $coordinates): Cell
+    {
+        $row = $coordinates->getRow();
+        $column = $coordinates->getColumn();
+
         if (!isset($this->board[$row][$column])) {
             throw new CellNotFound($row, $column);
         }
@@ -153,7 +171,7 @@ final class Board
     {
         for ($row = 0; $row < $this->rows; $row++) {
             for ($column = 0; $column < $this->columns; $column++) {
-                $cell = $this->getCell($row, $column);
+                $cell = $this->getCell(new Coordinates($row, $column));
                 if ($cell->isLastSelected()) {
                     $cell->setIsLastSelected(false);
                 }

@@ -19,7 +19,7 @@ final class MineSweeper
 
     public function isMine(Coordinates $coordinates): bool
     {
-        return $this->board->hasMineIn($coordinates->getRow(), $coordinates->getColumn());
+        return $this->board->hasMineIn($coordinates);
     }
 
     public function hasOnlyMinesLeft(): bool
@@ -27,9 +27,14 @@ final class MineSweeper
         return $this->board->hasOnlyMinesLeft();
     }
 
-    public function select(Coordinates $coordinates): void
+    public function allMinesWereFlagged(): bool
     {
-        $this->board->select($coordinates->getRow(), $coordinates->getColumn());
+        return $this->board->allMinesWereFlagged();
+    }
+
+    public function select(Coordinates $coordinates, bool $flag = false): void
+    {
+        $this->board->select($coordinates, $flag);
     }
 
     public function getBoardToDisplay(): array
@@ -51,7 +56,7 @@ final class MineSweeper
         for ($row = 0; $row < $rows; $row++) {
             $result[$row] = [];
             for ($column = 0; $column < $columns; $column++) {
-                $cell = $this->board->getCell($row, $column);
+                $cell = $this->board->getCell(new Coordinates($row, $column));
                 $result[$row][$column] = $cell->display($withMines);
             }
         }
