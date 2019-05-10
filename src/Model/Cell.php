@@ -10,7 +10,7 @@ final class Cell
     private $isMine = false;
 
     /** @var int */
-    private $totalNeighbors = 0;
+    private $totalMinesAround = 0;
 
     /** @var bool */
     private $isSelected = false;
@@ -34,14 +34,14 @@ final class Cell
         return $this->isMine;
     }
 
-    public function getTotalNeighbors(): int
+    public function getTotalMinesAround(): int
     {
-        return $this->totalNeighbors;
+        return $this->totalMinesAround;
     }
 
-    public function setTotalNeighbors(int $totalNeighbors): Cell
+    public function setTotalMinesAround(int $totalMinesAround): Cell
     {
-        $this->totalNeighbors = $totalNeighbors;
+        $this->totalMinesAround = $totalMinesAround;
 
         return $this;
     }

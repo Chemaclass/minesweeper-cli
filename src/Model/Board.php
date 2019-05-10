@@ -62,11 +62,12 @@ final class Board
             for ($column = 0; $column < $this->columns; $column++) {
                 $coordinates = new Coordinates($row, $column);
                 $minesAround = MinesAroundCalculator::calculate($this->rawBoard, $coordinates);
-                $cell = $this->getCell($coordinates);
-
-                if ($minesAround > 0 && !$cell->isMine()) {
-                    $cell->setTotalNeighbors($minesAround);
+                if (0 === $minesAround) {
+                    continue;
                 }
+
+                $cell = $this->getCell($coordinates);
+                $cell->setTotalMinesAround($minesAround);
             }
         }
     }

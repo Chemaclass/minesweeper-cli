@@ -38,11 +38,11 @@ final class CellRenderer
         }
 
         if ($cell->isLastSelected() && !$cell->isMine()) {
-            return $this->decorator->render((string)$cell->getTotalNeighbors(), self::LAST_SELECTED_COLOR);
+            return $this->decorator->render((string)$cell->getTotalMinesAround(), self::LAST_SELECTED_COLOR);
         }
 
         if ($cell->isSelected()) {
-            return $this->decorator->render((string)$cell->getTotalNeighbors(), self::SELECTED_COLOR);
+            return $this->decorator->render((string)$cell->getTotalMinesAround(), self::SELECTED_COLOR);
         }
 
         if ($withSolution && $cell->isMine()) {
@@ -50,7 +50,7 @@ final class CellRenderer
         }
 
         if ($withSolution) {
-            return $this->decorator->render((string)$cell->getTotalNeighbors(), self::UNKNOWN_COLOR);
+            return $this->decorator->render((string)$cell->getTotalMinesAround(), self::UNKNOWN_COLOR);
         }
 
         return $this->decorator->render(self::UNKNOWN_ICON, self::UNKNOWN_COLOR);
