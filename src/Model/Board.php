@@ -38,7 +38,7 @@ final class Board
             $this->rawBoard[$row] = [];
 
             for ($column = 0; $column < $columns; $column++) {
-                $this->rawBoard[$row][$column] = new Cell();
+                $this->rawBoard[$row][$column] = Cell::makeEmpty();
             }
         }
     }
@@ -52,7 +52,7 @@ final class Board
                 $cell = $this->rawBoard[$randomRow][$randomColumn];
             } while ($cell->isMine());
 
-            $this->rawBoard[$randomRow][$randomColumn] = new Cell(true);
+            $this->rawBoard[$randomRow][$randomColumn] = Cell::makeMine();
         }
     }
 

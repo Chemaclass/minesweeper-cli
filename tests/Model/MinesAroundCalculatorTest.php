@@ -12,9 +12,9 @@ final class MinesAroundCalculatorTest extends TestCase
     public function testCalculateFullCoveredByMines(): void
     {
         $rawBoard = [
-            [new Cell(true), new Cell(true), new Cell(true)],
-            [new Cell(true), new Cell(false), new Cell(true)],
-            [new Cell(true), new Cell(true), new Cell(true)],
+            [Cell::makeMine(), Cell::makeMine(), Cell::makeMine()],
+            [Cell::makeMine(), Cell::makeEmpty(), Cell::makeMine()],
+            [Cell::makeMine(), Cell::makeMine(), Cell::makeMine()],
         ];
 
         $coordinates = new Coordinates(1, 1);
@@ -25,9 +25,9 @@ final class MinesAroundCalculatorTest extends TestCase
     public function testCalculateWithoutMinesNearby(): void
     {
         $rawBoard = [
-            [new Cell(false), new Cell(false), new Cell(false)],
-            [new Cell(false), new Cell(false), new Cell(false)],
-            [new Cell(false), new Cell(false), new Cell(false)],
+            [Cell::makeEmpty(), Cell::makeEmpty(), Cell::makeEmpty()],
+            [Cell::makeEmpty(), Cell::makeEmpty(), Cell::makeEmpty()],
+            [Cell::makeEmpty(), Cell::makeEmpty(), Cell::makeEmpty()],
         ];
 
         $coordinates = new Coordinates(1, 1);

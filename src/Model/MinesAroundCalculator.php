@@ -15,14 +15,14 @@ final class MinesAroundCalculator
         $column = $coordinates->getColumn();
 
         $possibleCells = [
-            $rawBoard[$row - 1][$column - 1] ?? new Cell(),
-            $rawBoard[$row - 1][$column] ?? new Cell(),
-            $rawBoard[$row - 1][$column + 1] ?? new Cell(),
-            $rawBoard[$row][$column - 1] ?? new Cell(),
-            $rawBoard[$row][$column + 1] ?? new Cell(),
-            $rawBoard[$row + 1][$column - 1] ?? new Cell(),
-            $rawBoard[$row + 1][$column] ?? new Cell(),
-            $rawBoard[$row + 1][$column + 1] ?? new Cell(),
+            $rawBoard[$row - 1][$column - 1] ?? Cell::makeEmpty(),
+            $rawBoard[$row - 1][$column] ?? Cell::makeEmpty(),
+            $rawBoard[$row - 1][$column + 1] ?? Cell::makeEmpty(),
+            $rawBoard[$row][$column - 1] ?? Cell::makeEmpty(),
+            $rawBoard[$row][$column + 1] ?? Cell::makeEmpty(),
+            $rawBoard[$row + 1][$column - 1] ?? Cell::makeEmpty(),
+            $rawBoard[$row + 1][$column] ?? Cell::makeEmpty(),
+            $rawBoard[$row + 1][$column + 1] ?? Cell::makeEmpty(),
         ];
 
         foreach ($possibleCells as $cell) {

@@ -44,11 +44,12 @@ do {
 
     try {
         $inputParser->validate();
+
         if ($inputParser->hasError()) {
             $output->writeln($inputParser->getError());
             continue;
         }
-        // pass an object new Coordinates{row, column} instead.
+
         $isBomb = $mineSweeper->isMine($inputParser->getCoordinates());
         $mineSweeper->select($inputParser->getCoordinates(), $inputParser->isFlagMine());
         $boardPrinter->print($mineSweeper->getBoardToDisplay());

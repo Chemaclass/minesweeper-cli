@@ -24,7 +24,17 @@ final class Cell
     /** @var bool */
     private $isLastSelected = false;
 
-    public function __construct(bool $isMine = false)
+    public static function makeMine(): self
+    {
+        return new self(true);
+    }
+
+    public static function makeEmpty(): self
+    {
+        return new self(false);
+    }
+
+    private function __construct(bool $isMine = false)
     {
         $this->isMine = $isMine;
     }
