@@ -57,18 +57,21 @@ final class InputParser
             if (!isset($keyValue[1])) {
                 if ('flag' === $keyValue[0]) {
                     $this->isFlagMine = true;
+
                     continue;
                 }
             }
             // set the coordinates
             switch ($keyValue[0]) {
-                case 'c' :
-                case 'column' :
-                    $coordinates->setColumn((int)$keyValue[1]);
+                case 'c':
+                case 'column':
+                    $coordinates->setColumn((int) $keyValue[1]);
+
                     break;
                 case 'r':
-                case 'row' :
-                    $coordinates->setRow((int)$keyValue[1]);
+                case 'row':
+                    $coordinates->setRow((int) $keyValue[1]);
+
                     break;
                 default:
                     throw new UnknownInputKey($input);

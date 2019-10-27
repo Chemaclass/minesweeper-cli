@@ -8,6 +8,6 @@ final class RenderWithColor implements RenderDecoratorInterface
 {
     public function render(string $str, string $color = Color::WHITE): string
     {
-        return sprintf("%s%s%s", $color, $str, Color::WHITE);
+        return sprintf('%s%s%s', $color, $str, Color::WHITE);
     }
 }

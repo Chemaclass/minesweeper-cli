@@ -18,6 +18,11 @@ final class Coordinates
         $this->column = $column;
     }
 
+    public function __toString(): string
+    {
+        return "Coordinates{row:{$this->row}, column:{$this->column}}";
+    }
+
     public function getRow(): int
     {
         return $this->row;
@@ -28,22 +33,17 @@ final class Coordinates
         return $this->column;
     }
 
-    public function setRow(int $row): Coordinates
+    public function setRow(int $row): self
     {
         $this->row = $row;
 
         return $this;
     }
 
-    public function setColumn(int $column): Coordinates
+    public function setColumn(int $column): self
     {
         $this->column = $column;
 
         return $this;
-    }
-
-    public function __toString(): string
-    {
-        return "Coordinates{row:{$this->row}, column:{$this->column}}";
     }
 }

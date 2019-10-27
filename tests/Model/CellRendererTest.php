@@ -14,8 +14,7 @@ final class CellRendererTest extends TestCase
 
     public function setUp(): void
     {
-        $this->renderer = new CellRenderer(new class() implements RenderDecoratorInterface
-        {
+        $this->renderer = new CellRenderer(new class() implements RenderDecoratorInterface {
             public function render(string $str, string $decorate): string
             {
                 return $str;
@@ -45,5 +44,4 @@ final class CellRendererTest extends TestCase
             [$isMine = false, $isFlagged = false, $withSolution = true, $expectedIcon = '0'],
         ];
     }
-
 }

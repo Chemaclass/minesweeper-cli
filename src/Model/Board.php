@@ -32,46 +32,6 @@ final class Board
         $this->calculateMinesAround();
     }
 
-    private function generateBoard(int $rows, int $columns): void
-    {
-        for ($row = 0; $row < $rows; $row++) {
-            $this->rawBoard[$row] = [];
-
-            for ($column = 0; $column < $columns; $column++) {
-                $this->rawBoard[$row][$column] = Cell::makeEmpty();
-            }
-        }
-    }
-
-    private function introduceMinesIntoBoard(int $mines): void
-    {
-        for ($i = 0; $i < $mines; $i++) {
-            do {
-                [$randomRow, $randomColumn] = [mt_rand(0, $this->rows - 1), mt_rand(0, $this->columns - 1)];
-                /** @var Cell $cell */
-                $cell = $this->rawBoard[$randomRow][$randomColumn];
-            } while ($cell->isMine());
-
-            $this->rawBoard[$randomRow][$randomColumn] = Cell::makeMine();
-        }
-    }
-
-    private function calculateMinesAround(): void
-    {
-        for ($row = 0; $row < $this->rows; $row++) {
-            for ($column = 0; $column < $this->columns; $column++) {
-                $coordinates = new Coordinates($row, $column);
-                $minesAround = MinesAroundCalculator::calculate($this->rawBoard, $coordinates);
-                if (0 === $minesAround) {
-                    continue;
-                }
-
-                $cell = $this->getCell($coordinates);
-                $cell->setTotalMinesAround($minesAround);
-            }
-        }
-    }
-
     public function getTotalRows(): int
     {
         return $this->rows;
@@ -94,6 +54,7 @@ final class Board
         for ($row = 0; $row < $this->rows; $row++) {
             for ($column = 0; $column < $this->columns; $column++) {
                 $cell = $this->getCell(new Coordinates($row, $column));
+
                 if ($cell->isSelected()) {
                     $totalSelected++;
                 }
@@ -140,6 +101,47 @@ final class Board
         }
 
         return $this->rawBoard[$row][$column];
+    }
+
+    private function generateBoard(int $rows, int $columns): void
+    {
+        for ($row = 0; $row < $rows; $row++) {
+            $this->rawBoard[$row] = [];
+
+            for ($column = 0; $column < $columns; $column++) {
+                $this->rawBoard[$row][$column] = Cell::makeEmpty();
+            }
+        }
+    }
+
+    private function introduceMinesIntoBoard(int $mines): void
+    {
+        for ($i = 0; $i < $mines; $i++) {
+            do {
+                [$randomRow, $randomColumn] = [mt_rand(0, $this->rows - 1), mt_rand(0, $this->columns - 1)];
+                /** @var Cell $cell */
+                $cell = $this->rawBoard[$randomRow][$randomColumn];
+            } while ($cell->isMine());
+
+            $this->rawBoard[$randomRow][$randomColumn] = Cell::makeMine();
+        }
+    }
+
+    private function calculateMinesAround(): void
+    {
+        for ($row = 0; $row < $this->rows; $row++) {
+            for ($column = 0; $column < $this->columns; $column++) {
+                $coordinates = new Coordinates($row, $column);
+                $minesAround = MinesAroundCalculator::calculate($this->rawBoard, $coordinates);
+
+                if (0 === $minesAround) {
+                    continue;
+                }
+
+                $cell = $this->getCell($coordinates);
+                $cell->setTotalMinesAround($minesAround);
+            }
+        }
     }
 
     private function undoLatestSelected(): void

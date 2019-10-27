@@ -17,6 +17,7 @@ final class Cell
 
     /**
      * A flagged mine is a disabled mine.
+     *
      * @var bool
      */
     private $isFlagged = false;
@@ -49,7 +50,7 @@ final class Cell
         return $this->totalMinesAround;
     }
 
-    public function setTotalMinesAround(int $totalMinesAround): Cell
+    public function setTotalMinesAround(int $totalMinesAround): self
     {
         $this->totalMinesAround = $totalMinesAround;
 
@@ -61,7 +62,7 @@ final class Cell
         return $this->isSelected;
     }
 
-    public function setIsSelected(bool $isSelected): Cell
+    public function setIsSelected(bool $isSelected): self
     {
         $this->isSelected = $isSelected;
 
@@ -73,7 +74,7 @@ final class Cell
         return $this->isLastSelected;
     }
 
-    public function setIsLastSelected(bool $isLastSelected): Cell
+    public function setIsLastSelected(bool $isLastSelected): self
     {
         $this->isLastSelected = $isLastSelected;
 
@@ -85,7 +86,7 @@ final class Cell
         return $this->isFlagged;
     }
 
-    public function setIsFlagged(bool $isFlagged): Cell
+    public function setIsFlagged(bool $isFlagged): self
     {
         $this->isFlagged = $isFlagged;
 

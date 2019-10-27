@@ -13,6 +13,6 @@ final class EchoOutput implements OutputInterface
 
     public function write($var): void
     {
-        echo $var;
+        print $var;
     }
 }

@@ -60,6 +60,7 @@ final class MineSweeper
 
         for ($row = 0; $row < $rows; $row++) {
             $result[$row] = [];
+
             for ($column = 0; $column < $columns; $column++) {
                 $cell = $this->board->getCell(new Coordinates($row, $column));
                 $result[$row][$column] = $this->cellRenderer->render($cell, $withSolution);

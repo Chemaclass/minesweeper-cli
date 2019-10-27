@@ -21,7 +21,7 @@ $output = new EchoOutput();
 $boardPrinter = new BoardPrinter($output);
 $renderWithColor = new RenderWithColor();
 $mineSweeper = new MineSweeper(
-    new Board($rows = 4, $columns = 7, $mines = 1),
+    new Board($rows = 4, $columns = 7, $mines = 2),
     new CellRenderer($renderWithColor)
 );
 

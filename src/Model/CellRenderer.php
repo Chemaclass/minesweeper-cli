@@ -9,15 +9,21 @@ use App\Output\RenderDecoratorInterface;
 
 final class CellRenderer
 {
-    const FLAG_COLOR = Color::PURPLE;
-    const MINE_COLOR = Color::RED;
-    const SELECTED_COLOR = Color::GREEN;
-    const UNKNOWN_COLOR = Color::YELLOW;
-    const LAST_SELECTED_COLOR = Color::BLUE;
+    public const FLAG_COLOR = Color::PURPLE;
 
-    const MINE_ICON = 'X';
-    const FLAG_ICON = 'F';
-    const UNKNOWN_ICON = '?';
+    public const MINE_COLOR = Color::RED;
+
+    public const SELECTED_COLOR = Color::GREEN;
+
+    public const UNKNOWN_COLOR = Color::YELLOW;
+
+    public const LAST_SELECTED_COLOR = Color::BLUE;
+
+    public const MINE_ICON = 'X';
+
+    public const FLAG_ICON = 'F';
+
+    public const UNKNOWN_ICON = '?';
 
     /** @var RenderDecoratorInterface */
     private $decorator;
@@ -38,11 +44,11 @@ final class CellRenderer
         }
 
         if ($cell->isLastSelected() && !$cell->isMine()) {
-            return $this->decorator->render((string)$cell->getTotalMinesAround(), self::LAST_SELECTED_COLOR);
+            return $this->decorator->render((string) $cell->getTotalMinesAround(), self::LAST_SELECTED_COLOR);
         }
 
         if ($cell->isSelected()) {
-            return $this->decorator->render((string)$cell->getTotalMinesAround(), self::SELECTED_COLOR);
+            return $this->decorator->render((string) $cell->getTotalMinesAround(), self::SELECTED_COLOR);
         }
 
         if ($withSolution && $cell->isMine()) {
@@ -50,7 +56,7 @@ final class CellRenderer
         }
 
         if ($withSolution) {
-            return $this->decorator->render((string)$cell->getTotalMinesAround(), self::UNKNOWN_COLOR);
+            return $this->decorator->render((string) $cell->getTotalMinesAround(), self::UNKNOWN_COLOR);
         }
 
         return $this->decorator->render(self::UNKNOWN_ICON, self::UNKNOWN_COLOR);

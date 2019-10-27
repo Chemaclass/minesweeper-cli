@@ -34,5 +34,4 @@ final class MinesAroundCalculatorTest extends TestCase
 
         $this->assertEquals(0, MinesAroundCalculator::calculate($rawBoard, $coordinates));
     }
-
 }
