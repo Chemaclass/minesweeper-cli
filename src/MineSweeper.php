@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App;
+namespace Chemaclass\MinesweeperCli;
 
-use App\Input\Coordinates;
-use App\Model\Board;
-use App\Model\CellRenderer;
+use Chemaclass\MinesweeperCli\Input\Coordinates;
+use Chemaclass\MinesweeperCli\Model\Board;
+use Chemaclass\MinesweeperCli\Model\CellRenderer;
 
 final class MineSweeper
 {

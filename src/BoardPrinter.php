@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App;
+namespace Chemaclass\MinesweeperCli;
 
-use App\Output\OutputInterface;
+use Chemaclass\MinesweeperCli\Output\OutputInterface;
 
 final class BoardPrinter
 {

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Model;
+namespace Chemaclass\MinesweeperCli\Model;
 
-use App\Input\Coordinates;
+use Chemaclass\MinesweeperCli\Input\Coordinates;
 
 final class MinesAroundCalculator
 {

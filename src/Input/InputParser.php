@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Input;
+namespace Chemaclass\MinesweeperCli\Input;
 
-use App\Exception\UnknownInputKey;
+use Chemaclass\MinesweeperCli\Exception\UnknownInputKey;
 
 final class InputParser
 {

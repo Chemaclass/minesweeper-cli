@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Exception;
+namespace Chemaclass\MinesweeperCli\Exception;
 
-use App\Input\Coordinates;
+use Chemaclass\MinesweeperCli\Input\Coordinates;
 
 final class CellAlreadySelected extends \Exception
 {

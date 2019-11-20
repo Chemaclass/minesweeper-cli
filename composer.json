@@ -1,9 +1,20 @@
 {
   "name": "chemaclass/minesweeper-cli",
+  "description": "Minesweeper console game",
+  "type": "library",
+  "homepage": "https://github.com/Chemaclass/minesweeper-cli",
+  "license": "MIT",
+  "keywords": [
+    "php",
+    "minesweeper",
+    "minesweeper-cli",
+    "minesweeper-console"
+  ],
   "authors": [
     {
-      "name": "Chemaclass",
-      "email": "chemaclass@outlook.es"
+      "name": "Jose Maria Valera Reales",
+      "email": "chemaclass@outlook.es",
+      "homepage": "http://chemaclass.es/"
     }
   ],
   "require": {
@@ -13,8 +24,8 @@
   },
   "autoload": {
     "psr-4": {
-      "App\\": "src/",
-      "Test\\": "tests/"
+      "Chemaclass\\MinesweeperCli\\": "src/",
+      "Chemaclass\\MinesweeperCliTests\\": "tests/"
     }
   }
 }

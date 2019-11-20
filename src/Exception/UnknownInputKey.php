@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Exception;
+namespace Chemaclass\MinesweeperCli\Exception;
 
 final class UnknownInputKey extends \Exception
 {

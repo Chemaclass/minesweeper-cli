@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/vendor/autoload.php';
 
-use App\BoardPrinter;
-use App\Exception\CellAlreadySelected;
-use App\Exception\CellNotFound;
-use App\Exception\UnknownInputKey;
-use App\Input\InputParser;
-use App\MineSweeper;
-use App\Model\Board;
-use App\Model\CellRenderer;
-use App\Output\Color;
-use App\Output\EchoOutput;
-use App\Output\RenderWithColor;
+use Chemaclass\MinesweeperCli\BoardPrinter;
+use Chemaclass\MinesweeperCli\Exception\CellAlreadySelected;
+use Chemaclass\MinesweeperCli\Exception\CellNotFound;
+use Chemaclass\MinesweeperCli\Exception\UnknownInputKey;
+use Chemaclass\MinesweeperCli\Input\InputParser;
+use Chemaclass\MinesweeperCli\MineSweeper;
+use Chemaclass\MinesweeperCli\Model\Board;
+use Chemaclass\MinesweeperCli\Model\CellRenderer;
+use Chemaclass\MinesweeperCli\Output\Color;
+use Chemaclass\MinesweeperCli\Output\EchoOutput;
+use Chemaclass\MinesweeperCli\Output\RenderWithColor;
 
 $isBomb = false;
 $output = new EchoOutput();

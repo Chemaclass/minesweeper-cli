@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\Model;
+namespace Chemaclass\MinesweeperCli\Model;
 
-use App\Exception\CellNotFound;
-use App\Input\Coordinates;
+use Chemaclass\MinesweeperCli\Exception\CellNotFound;
+use Chemaclass\MinesweeperCli\Input\Coordinates;
 
 final class Board
 {

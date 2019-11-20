@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\Model;
+namespace Chemaclass\MinesweeperCli\Model;
 
-use App\Output\Color;
-use App\Output\RenderDecoratorInterface;
+use Chemaclass\MinesweeperCli\Output\Color;
+use Chemaclass\MinesweeperCli\Output\RenderDecoratorInterface;
 
 final class CellRenderer
 {

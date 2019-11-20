@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Output;
+namespace Chemaclass\MinesweeperCli\Output;
 
 final class RenderWithColor implements RenderDecoratorInterface
 {
