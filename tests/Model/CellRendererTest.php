@@ -2,9 +2,11 @@
 
 declare(strict_types=1);
 
-use App\Model\Cell;
-use App\Model\CellRenderer;
-use App\Output\RenderDecoratorInterface;
+namespace Chemaclass\MinesweeperCliTests;
+
+use Chemaclass\MinesweeperCli\Model\Cell;
+use Chemaclass\MinesweeperCli\Model\CellRenderer;
+use Chemaclass\MinesweeperCli\Output\RenderDecoratorInterface;
 use PHPUnit\Framework\TestCase;
 
 final class CellRendererTest extends TestCase
@@ -14,7 +16,8 @@ final class CellRendererTest extends TestCase
 
     public function setUp(): void
     {
-        $this->renderer = new CellRenderer(new class() implements RenderDecoratorInterface {
+        $this->renderer = new CellRenderer(new class() implements RenderDecoratorInterface
+        {
             public function render(string $str, string $decorate): string
             {
                 return $str;
@@ -25,7 +28,8 @@ final class CellRendererTest extends TestCase
     /** @dataProvider displayProvider */
     public function testDisplay(bool $isMine, bool $isFlagged, bool $withSolution, string $expectedIcon): void
     {
-        $cell = (new Cell($isMine))->setIsFlagged($isFlagged);
+        $cell = $isMine ? Cell::makeMine() : Cell::makeEmpty();
+        $cell->setIsFlagged($isFlagged);
         $this->assertEquals($expectedIcon, $this->renderer->render($cell, $withSolution));
     }
 

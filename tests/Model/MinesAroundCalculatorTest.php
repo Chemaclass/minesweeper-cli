@@ -2,9 +2,11 @@
 
 declare(strict_types=1);
 
-use App\Input\Coordinates;
-use App\Model\Cell;
-use App\Model\MinesAroundCalculator;
+namespace Chemaclass\MinesweeperCliTests;
+
+use Chemaclass\MinesweeperCli\Input\Coordinates;
+use Chemaclass\MinesweeperCli\Model\Cell;
+use Chemaclass\MinesweeperCli\Model\MinesAroundCalculator;
 use PHPUnit\Framework\TestCase;
 
 final class MinesAroundCalculatorTest extends TestCase
