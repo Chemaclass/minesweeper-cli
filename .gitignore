@@ -1,5 +1,6 @@
-.idea/
+coverage
 vendor/
-.phpunit*
+.idea/
 .DS_Store
 .phpunit.result.cache
+infection.log
