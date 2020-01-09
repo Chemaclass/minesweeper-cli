@@ -8,6 +8,7 @@ use Chemaclass\MinesweeperCli\BoardPrinter;
 use Chemaclass\MinesweeperCli\Exception\CellAlreadySelected;
 use Chemaclass\MinesweeperCli\Exception\CellNotFound;
 use Chemaclass\MinesweeperCli\Exception\UnknownInputKey;
+use Chemaclass\MinesweeperCli\Game;
 use Chemaclass\MinesweeperCli\Input\InputParser;
 use Chemaclass\MinesweeperCli\MineSweeper;
 use Chemaclass\MinesweeperCli\Model\Board;
@@ -15,6 +16,13 @@ use Chemaclass\MinesweeperCli\Model\CellRenderer;
 use Chemaclass\MinesweeperCli\Output\Color;
 use Chemaclass\MinesweeperCli\Output\EchoOutput;
 use Chemaclass\MinesweeperCli\Output\RenderWithColor;
+
+
+// WIP: instead of everything here in the index.php
+// encapsulate this states in a class such
+// $game = new Game();
+// while($game->isContinueLooping()) { ... }
+// $game->outputResult();
 
 $isBomb = false;
 $output = new EchoOutput();
